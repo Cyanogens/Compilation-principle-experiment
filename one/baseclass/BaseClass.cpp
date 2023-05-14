@@ -17,12 +17,9 @@ Node::Node(char type, Node *lchild, Node *rchild) : lchild(lchild), rchild(rchil
  * @param chars
  * @param charSize
  */
-Graph::Graph(const char *chars, int charSize) {
+Graph::Graph(vector<char> chars) {
     this->stateSize = 0;
-    this->charTypeNum = charSize;
-    for (int i = 0; i < charSize; i++) {
-        this->absorbChar[i] = chars[i];//todo：改vector
-    }
+    this->absorbChar.insert(this->absorbChar.end(), chars.begin(), chars.end());
     for (auto &skip : this->skips) {
         for (int &j : skip) {
             //表示无跳转
@@ -45,13 +42,13 @@ void Graph::visitGraph() {
 
     cout << "状态跳转矩阵:" << endl;
     cout << "状态" << setw(6);
-    for (int i = 0; i < this->charTypeNum; i++) {
-        cout << this->absorbChar[i] << setw(6);//todo：改vector
+    for (char i : this->absorbChar) {
+        cout << i << setw(6);
     }
     cout << setw(7) << "ε" << endl;
     for (int i = 0; i < this->stateSize; i++) {
         cout << setw(3) << i;
-        for (int j = 0; j < this->charTypeNum; j++) {
+        for (int j = 0; j < this->absorbChar.size(); j++) {
             if (this->skips[i][j] == MAX) {
                 cout << setw(6) << "-";
             } else {

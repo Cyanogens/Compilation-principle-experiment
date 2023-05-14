@@ -49,12 +49,10 @@ namespace base_class {
     public:
         //状态数
         int stateSize;
-        //吸收字符种类数
-        int charTypeNum;
         //类型
         string type;
         //吸收字符
-        char absorbChar[MAX]{};//todo：改vector
+        vector<char> absorbChar;
         //状态跳转
         int skips[MAX][MAX]{};
         //空状态跳转 每行第一列放该状态的空跳转数
@@ -66,7 +64,7 @@ namespace base_class {
         //终点集(对于dfa而言,有多个终点)
         StatesSet endSet;
     public:
-        Graph(const char *chars, int charSize);
+        explicit Graph(vector<char> chars);
 
         void visitGraph();
     };

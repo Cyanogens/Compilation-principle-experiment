@@ -91,8 +91,8 @@ bool isInsert(char l, char r) {
  */
 string inputRegex() {
     cout << "请输入正则表达式：";
-//    string regex = "(a|b)+(a|b)*";
-    string regex = "(ab|c)*";
+    string regex = "(a|b)+(a|b)*";
+//    string regex = "(ab|c)*";
     //cin >> regex;
     regex.insert(0, "#");
     //加入结束符
@@ -213,22 +213,16 @@ Node *syntaxTree(string str) {
  * @param size
  * @return
  */
-int addFindChar(char *chars, char a, int &size) {//todo：chars改vector
-    if (size == 0) {
-        chars[0] = a;
-        size++;
-        return MAX;
-    } else {
-        for (int i = 0; i < size; i++) {
-            if (chars[i] == a) {
-                //返回对应下标
-                return i;
-            }
+int addFindChar(vector<char> &chars, char a) {
+    for (int i = 0; i < chars.size(); i++) {
+        if (chars[i] == a) {
+            //返回对应下标
+            return i;
         }
-        chars[size++] = a;
-        //没找到,添加
-        return MAX;
     }
+    //没找到,添加
+    chars.push_back(a);
+    return MAX;
 }
 
 /**
@@ -238,15 +232,14 @@ int addFindChar(char *chars, char a, int &size) {//todo：chars改vector
  * @param chars
  * @return
  */
-int getAbsorbChar(const string &str, char *chars) {
-    int charSize = 0;
+int getAbsorbChar(const string &str, vector<char> &chars) {
     for (char i : str) {
         //不是操作符
         if (!processingOperPriority(i)) {
-            addFindChar(chars, i, charSize);
+            addFindChar(chars, i);
         }
     }
-    return charSize;
+    return chars.size();
 }
 
 /**
@@ -258,7 +251,7 @@ int getAbsorbChar(const string &str, char *chars) {
  * @param c 输入字符
  */
 void addSkips(Graph &graph, int begin, int end, char c) {
-    graph.skips[begin][addFindChar(graph.absorbChar, c, graph.charTypeNum)] = end;
+    graph.skips[begin][addFindChar(graph.absorbChar, c)] = end;
 }
 
 /**
@@ -365,11 +358,11 @@ void makeNFA(Node *tree, Graph &graph, const string &str) {
  */
 Graph constructNFA(Node *tree, const string &str) {
     //得到吸收符号
-    char chars[MAX];
-    //正则表达式中的吸收符号
-    int charSize = getAbsorbChar(str, chars);
-    //初始化状态转移(makeNFA)
-    auto *graph = new Graph(chars, charSize);
+    vector<char> chars;
+    //正则表达式中的字符
+    getAbsorbChar(str, chars);
+    //初始化NFA
+    auto *graph = new Graph(chars);
     graph->type = NFA;
     //构造
     makeNFA(tree, *graph, str);
