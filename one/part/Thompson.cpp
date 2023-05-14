@@ -91,12 +91,13 @@ bool isInsert(char l, char r) {
  */
 string inputRegex() {
     cout << "请输入正则表达式：";
-    string regex = "(a|b)+(a|b)*";
+//    string regex = "(a|b)+(a|b)*";
+    string regex = "(ab|c)*";
     //cin >> regex;
     regex.insert(0, "#");
     //加入结束符
     regex.append("#");
-    //将正则表达式加入cat连接符
+    //将正则表达式加入连接符
     int l = 0, r = 1;
     while (regex[r] != '#') {
         if (isInsert(regex[l], regex[r])) {
@@ -128,7 +129,7 @@ bool isHigh(char oddOp, char newOp) {
  */
 Node *connectNodes(char op, deque<Node *> &charStack) {
     Node *chars1, *chars2;
-    if (op == '|' || op == '&') {
+    if (op == '|' || op == '&') {//创建以操作符为根的结点
         chars1 = charStack.back();
         charStack.pop_back();
         chars2 = charStack.back();
@@ -158,15 +159,15 @@ Node *syntaxTree(string str) {
         char c = str[i];
         //语法内容
         if (!processingOperPriority(c)) {
-            // 包装叶子节点,压入语法栈
+            //包装叶子节点,压入语法栈
             charStack.push_back(new Node(c));
         } else {
-            //符号
+            //操作符
             if (c == '(') {
                 //直接入栈
-                operStack.push('(');
+                operStack.push(c);
             } else if (c == ')') {
-                //将遇到'('之间栈清空
+                //将操作符栈中在'('后的操作符及其相关节点进行链接
                 while (operStack.top() != '(') {
                     char op = operStack.top();
                     operStack.pop();
@@ -180,8 +181,8 @@ Node *syntaxTree(string str) {
                 charStack.push_back(node);
             } else {
                 while (!isHigh(operStack.top(), c)) {
-                    //循环比较,直到比栈顶操作符优先级高
-                    //栈顶元素出栈
+                    //当前操作符优先级低于栈顶操作符优先级
+                    //将高优先级的操作符相关的进行链接处理
                     char op = operStack.top();
                     operStack.pop();
                     //得到新的根节点
@@ -212,20 +213,19 @@ Node *syntaxTree(string str) {
  * @param size
  * @return
  */
-int addFindChar(char *chars, char a, int &size) {
+int addFindChar(char *chars, char a, int &size) {//todo：chars改vector
     if (size == 0) {
         chars[0] = a;
         size++;
         return MAX;
     } else {
-        int i;
-        for (i = 0; i < size; i++)
-            if (*(chars + i) == a) {
-                //找到了
+        for (int i = 0; i < size; i++) {
+            if (chars[i] == a) {
+                //返回对应下标
                 return i;
             }
-        chars[i] = a;
-        size++;
+        }
+        chars[size++] = a;
         //没找到,添加
         return MAX;
     }
@@ -281,10 +281,8 @@ void addEmptySkips(Graph &graph, int begin, int end) {
  * @param node
  */
 void leafSkip(Graph &graph, Node &node) {
-    node.startState = graph.stateSize;
-    graph.stateSize++;
-    node.endState = graph.stateSize;
-    graph.stateSize++;
+    node.startState = graph.stateSize++;
+    node.endState = graph.stateSize++;
     addSkips(graph, node.startState, node.endState, node.chars); //添加始末状态转移
 }
 

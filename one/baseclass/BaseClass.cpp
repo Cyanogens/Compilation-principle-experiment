@@ -21,7 +21,7 @@ Graph::Graph(const char *chars, int charSize) {
     this->stateSize = 0;
     this->charTypeNum = charSize;
     for (int i = 0; i < charSize; i++) {
-        this->absorbChar[i] = chars[i];
+        this->absorbChar[i] = chars[i];//todo：改vector
     }
     for (auto &skip : this->skips) {
         for (int &j : skip) {
@@ -46,7 +46,7 @@ void Graph::visitGraph() {
     cout << "状态跳转矩阵:" << endl;
     cout << "状态" << setw(6);
     for (int i = 0; i < this->charTypeNum; i++) {
-        cout << this->absorbChar[i] << setw(6);
+        cout << this->absorbChar[i] << setw(6);//todo：改vector
     }
     cout << setw(7) << "ε" << endl;
     for (int i = 0; i < this->stateSize; i++) {

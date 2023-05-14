@@ -54,7 +54,7 @@ namespace base_class {
         //类型
         string type;
         //吸收字符
-        char absorbChar[MAX]{};
+        char absorbChar[MAX]{};//todo：改vector
         //状态跳转
         int skips[MAX][MAX]{};
         //空状态跳转 每行第一列放该状态的空跳转数
