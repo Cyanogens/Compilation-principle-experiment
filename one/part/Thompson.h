@@ -4,6 +4,8 @@
 #include <bits/stdc++.h>
 #include "../baseclass/BaseClass.h"
 
-void toMakeNFA();
+using namespace base_class;
+
+Graph toMakeNFA();
 
 #endif

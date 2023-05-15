@@ -263,8 +263,7 @@ void addSkips(Graph &graph, int begin, int end, char c) {
  */
 void addEmptySkips(Graph &graph, int begin, int end) {
     //空跳转数加一
-    graph.emptySkips[begin][0]++;
-    graph.emptySkips[begin][graph.emptySkips[begin][0]] = end;
+    graph.emptySkips[begin][graph.emptySkips[begin][0]++] = end;
 }
 
 /**
@@ -288,30 +287,24 @@ void leafSkip(Graph &graph, Node &node) {
 void rootSkip(Graph &graph, Node &node) {
     if (node.type == '|') {
         //或根构造
-        node.startState = graph.stateSize;
-        graph.stateSize++;
-        node.endState = graph.stateSize;
-        graph.stateSize++;
+        node.startState = graph.stateSize++;
+        node.endState = graph.stateSize++;
         addEmptySkips(graph, node.startState, node.lchild->startState);
         addEmptySkips(graph, node.startState, node.rchild->startState);
         addEmptySkips(graph, node.lchild->endState, node.endState);
         addEmptySkips(graph, node.rchild->endState, node.endState);
     } else if (node.type == '*') {
         //闭包构造
-        node.startState = graph.stateSize;
-        graph.stateSize++;
-        node.endState = graph.stateSize;
-        graph.stateSize++;
+        node.startState = graph.stateSize++;
+        node.endState = graph.stateSize++;
         addEmptySkips(graph, node.startState, node.lchild->startState);
         addEmptySkips(graph, node.startState, node.endState);
         addEmptySkips(graph, node.lchild->endState, node.lchild->startState);
         addEmptySkips(graph, node.lchild->endState, node.endState);
     } else if (node.type == '+') {
         //正闭包构造
-        node.startState = graph.stateSize;
-        graph.stateSize++;
-        node.endState = graph.stateSize;
-        graph.stateSize++;
+        node.startState = graph.stateSize++;
+        node.endState = graph.stateSize++;
         addEmptySkips(graph, node.startState, node.lchild->startState);
         addEmptySkips(graph, node.lchild->endState, node.lchild->startState);
         addEmptySkips(graph, node.lchild->endState, node.endState);
@@ -374,7 +367,7 @@ Graph constructNFA(Node *tree, const string &str) {
 /**
  * 生成NFA
  */
-void toMakeNFA() {
+Graph toMakeNFA() {
     string regex = inputRegex();
     cout << "正规式为:" << regex << endl;
     //构建语法树
@@ -387,4 +380,5 @@ void toMakeNFA() {
     cout << endl << "-----------Thompson算法构造NFA-----------" << endl;
     Graph nfa = constructNFA(tree, regex);
     nfa.visitGraph();
+    return nfa;
 }
