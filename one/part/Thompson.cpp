@@ -91,7 +91,9 @@ bool isInsert(char l, char r) {
  */
 string inputRegex() {
     cout << "请输入正则表达式：";
-    string regex = "(a|b)+(a|b)*";
+//    string regex = "(a|b)*";
+//    string regex = "(a|b)*a";
+    string regex = "(a|b)+ab(a|b)*";
 //    string regex = "(ab|c)*";
     //cin >> regex;
     regex.insert(0, "#");
@@ -129,7 +131,8 @@ bool isHigh(char oddOp, char newOp) {
  */
 Node *connectNodes(char op, deque<Node *> &charStack) {
     Node *chars1, *chars2;
-    if (op == '|' || op == '&') {//创建以操作符为根的结点
+    if (op == '|' || op == '&') {
+        //创建以操作符为根的结点
         chars1 = charStack.back();
         charStack.pop_back();
         chars2 = charStack.back();
@@ -263,7 +266,7 @@ void addSkips(Graph &graph, int begin, int end, char c) {
  */
 void addEmptySkips(Graph &graph, int begin, int end) {
     //空跳转数加一
-    graph.emptySkips[begin][graph.emptySkips[begin][0]++] = end;
+    graph.emptySkips[begin][++graph.emptySkips[begin][0]] = end;
 }
 
 /**
@@ -275,7 +278,8 @@ void addEmptySkips(Graph &graph, int begin, int end) {
 void leafSkip(Graph &graph, Node &node) {
     node.startState = graph.stateSize++;
     node.endState = graph.stateSize++;
-    addSkips(graph, node.startState, node.endState, node.chars); //添加始末状态转移
+    //添加始末状态转移
+    addSkips(graph, node.startState, node.endState, node.chars);
 }
 
 /**
@@ -312,7 +316,14 @@ void rootSkip(Graph &graph, Node &node) {
         //连接构造
         node.startState = node.lchild->startState;
         node.endState = node.rchild->endState;
-        addEmptySkips(graph, node.lchild->endState, node.rchild->startState);
+        for (int i = 0; i < graph.absorbChar.size(); i++) {
+            graph.skips[node.lchild->endState][i] = graph.skips[node.rchild->startState][i];
+            graph.skips[node.rchild->startState][i] = -1;
+            graph.emptySkips[node.lchild->endState][i] = graph.emptySkips[node.rchild->startState][i];
+            graph.emptySkips[node.rchild->startState][i] = -1;
+        }
+        node.rchild->startState = node.lchild->startState;
+        node.lchild->endState = node.rchild->endState;
     } else {
         cout << "fault!";
     }
@@ -361,6 +372,7 @@ Graph constructNFA(Node *tree, const string &str) {
     makeNFA(tree, *graph, str);
     graph->startState = tree->startState;
     graph->endState = tree->endState;
+    //todo:刷新跳转列表
     return *graph;
 }
 
