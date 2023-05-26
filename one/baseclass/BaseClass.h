@@ -9,33 +9,33 @@ namespace base_class {
     using namespace std;
 
     /**
-    * æ ‘èŠ‚ç‚¹
+    * Ê÷½Úµã
     */
     struct Node {
-        //èŠ‚ç‚¹ç±»å‹
+        //½ÚµãÀàĞÍ
         char type{};
-        //å¶å­ç»“ç‚¹ä»£è¡¨çš„å­—ç¬¦
+        //Ò¶×Ó½áµã´ú±íµÄ×Ö·û
         char chars{};
-        //å·¦å­æ ‘
+        //×ó×ÓÊ÷
         Node *lchild;
-        //å³å­æ ‘
+        //ÓÒ×ÓÊ÷
         Node *rchild;
-        //èµ·å§‹çŠ¶æ€
+        //ÆğÊ¼×´Ì¬
         int startState{};
-        //ç»ˆæ­¢çŠ¶æ€
+        //ÖÕÖ¹×´Ì¬
         int endState{};
     public:
         Node();
 
-        //åŒ…è£…å¶å­èŠ‚ç‚¹
+        //°ü×°Ò¶×Ó½Úµã
         explicit Node(char c);
 
-        //åŒ…è£…æ ¹èŠ‚ç‚¹
+        //°ü×°¸ù½Úµã
         explicit Node(char type, Node *lchild, Node *rchild);
     };
 
     /**
-     * çŠ¶æ€é›†
+     * ×´Ì¬¼¯
      */
     struct StatesSet {
         int stateSet[MAX]{};
@@ -43,25 +43,25 @@ namespace base_class {
     };
 
     /**
-    * å›¾çš„çŸ©é˜µè¡¨ç¤º
+    * Í¼µÄ¾ØÕó±íÊ¾
     */
     struct Graph {
     public:
-        //çŠ¶æ€æ•°
+        //×´Ì¬Êı
         int stateSize;
-        //ç±»å‹
+        //ÀàĞÍ
         string type;
-        //å¸æ”¶å­—ç¬¦
+        //ÎüÊÕ×Ö·û
         vector<char> absorbChar;
-        //çŠ¶æ€è·³è½¬
+        //×´Ì¬Ìø×ª
         int skips[MAX][MAX]{};
-        //ç©ºçŠ¶æ€è·³è½¬ æ¯è¡Œç¬¬ä¸€åˆ—æ”¾è¯¥çŠ¶æ€çš„ç©ºè·³è½¬æ•°
+        //¿Õ×´Ì¬Ìø×ª Ã¿ĞĞµÚÒ»ÁĞ·Å¸Ã×´Ì¬µÄ¿ÕÌø×ªÊı
         int emptySkips[MAX][MAX]{};
-        //èµ·ç‚¹
+        //Æğµã
         int startState{};
-        //ç»ˆç‚¹(å¯¹nfaè€Œè¨€,åªæœ‰ä¸€ä¸ªç»ˆç‚¹)
+        //ÖÕµã(¶Ônfa¶øÑÔ,Ö»ÓĞÒ»¸öÖÕµã)
         int endState{};
-        //ç»ˆç‚¹é›†(å¯¹äºdfaè€Œè¨€,æœ‰å¤šä¸ªç»ˆç‚¹)
+        //ÖÕµã¼¯(¶ÔÓÚdfa¶øÑÔ,ÓĞ¶à¸öÖÕµã)
         StatesSet endSet;
     public:
         explicit Graph(vector<char> chars);

@@ -1,5 +1,5 @@
 /**
- * è¯æ³•åˆ†æ
+ * ´Ê·¨·ÖÎö
  *
  * @author Cyanogen
  * @date 2023-03-20 23:25
@@ -10,9 +10,8 @@
 using namespace std;
 using namespace base_class;
 
-
 /**
- * ååºéå†è¯­æ³•æ ‘
+ * ºóĞò±éÀúÓï·¨Ê÷
  *
  * @param Tree
  */
@@ -31,7 +30,7 @@ void visitTree(Node *Tree) {
 }
 
 /**
- * è¿ç®—ç¬¦è½¬æ¢å¯¹åº”ä¼˜å…ˆçº§
+ * ÔËËã·û×ª»»¶ÔÓ¦ÓÅÏÈ¼¶
  *
  * @param o
  * @return
@@ -52,13 +51,13 @@ int processingOperPriority(char o) {
         case '*':
             return 6;
         default :
-            //ä¸æ˜¯æ“ä½œç¬¦
+            //²»ÊÇ²Ù×÷·û
             return 0;
     }
 }
 
 /**
- * åˆ¤æ–­æ˜¯å¦åŠ å…¥è¿æ¥è¿ç®—ç¬¦
+ * ÅĞ¶ÏÊÇ·ñ¼ÓÈëÁ¬½ÓÔËËã·û
  *
  * @param l
  * @param r
@@ -85,21 +84,18 @@ bool isInsert(char l, char r) {
 }
 
 /**
- * è¾“å…¥æ­£åˆ™è¡¨è¾¾å¼
+ * ÊäÈëÕıÔò±í´ïÊ½
  *
  * @return
  */
 string inputRegex() {
-    cout << "è¯·è¾“å…¥æ­£åˆ™è¡¨è¾¾å¼ï¼š";
-//    string regex = "(a|b)*";
-//    string regex = "(a|b)*a";
-    string regex = "(a|b)+ab(a|b)*";
-//    string regex = "(ab|c)*";
-    //cin >> regex;
+    cout << "ÇëÊäÈëÕıÔò±í´ïÊ½£º";
+    string regex = "e*|(c|d*)";
+    cin >> regex;
     regex.insert(0, "#");
-    //åŠ å…¥ç»“æŸç¬¦
+    //¼ÓÈë½áÊø·û
     regex.append("#");
-    //å°†æ­£åˆ™è¡¨è¾¾å¼åŠ å…¥è¿æ¥ç¬¦
+    //½«ÕıÔò±í´ïÊ½¼ÓÈëÁ¬½Ó·û
     int l = 0, r = 1;
     while (regex[r] != '#') {
         if (isInsert(regex[l], regex[r])) {
@@ -112,7 +108,7 @@ string inputRegex() {
 }
 
 /**
- * æ¯”è¾ƒè¿ç®—ç¬¦ä¼˜å…ˆçº§
+ * ±È½ÏÔËËã·ûÓÅÏÈ¼¶
  *
  * @param oddOp
  * @param newOp
@@ -123,7 +119,7 @@ bool isHigh(char oddOp, char newOp) {
 }
 
 /**
- * æ ¹æ®è¿ç®—ç¬¦è¿æ¥èŠ‚ç‚¹
+ * ¸ù¾İÔËËã·ûÁ¬½Ó½Úµã
  *
  * @param op
  * @param charStack
@@ -132,7 +128,7 @@ bool isHigh(char oddOp, char newOp) {
 Node *connectNodes(char op, deque<Node *> &charStack) {
     Node *chars1, *chars2;
     if (op == '|' || op == '&') {
-        //åˆ›å»ºä»¥æ“ä½œç¬¦ä¸ºæ ¹çš„ç»“ç‚¹
+        //´´½¨ÒÔ²Ù×÷·ûÎª¸ùµÄ½áµã
         chars1 = charStack.back();
         charStack.pop_back();
         chars2 = charStack.back();
@@ -146,31 +142,31 @@ Node *connectNodes(char op, deque<Node *> &charStack) {
 }
 
 /**
- * æ„é€ è¯­æ³•æ ‘
+ * ¹¹ÔìÓï·¨Ê÷
  *
  * @param str
  * @return
  */
 Node *syntaxTree(string str) {
-    //ç¬¦å·æ ˆå’Œè¯­æ³•æ ˆ
+    //·ûºÅÕ»ºÍÓï·¨Õ»
     stack<char> operStack;
     deque<Node *> charStack;
-    //å°†#å‹å…¥ç¬¦å·æ ˆ
+    //½«#Ñ¹Èë·ûºÅÕ»
     operStack.push(str[0]);
-    //æ‰«æ(é™¤äº†å¼€å¤´å’Œç»“å°¾çš„#)
+    //É¨Ãè(³ıÁË¿ªÍ·ºÍ½áÎ²µÄ#)
     for (int i = 1; i < str.size() - 1; i++) {
         char c = str[i];
-        //è¯­æ³•å†…å®¹
+        //Óï·¨ÄÚÈİ
         if (!processingOperPriority(c)) {
-            //åŒ…è£…å¶å­èŠ‚ç‚¹,å‹å…¥è¯­æ³•æ ˆ
+            //°ü×°Ò¶×Ó½Úµã,Ñ¹ÈëÓï·¨Õ»
             charStack.push_back(new Node(c));
         } else {
-            //æ“ä½œç¬¦
+            //²Ù×÷·û
             if (c == '(') {
-                //ç›´æ¥å…¥æ ˆ
+                //Ö±½ÓÈëÕ»
                 operStack.push(c);
             } else if (c == ')') {
-                //å°†æ“ä½œç¬¦æ ˆä¸­åœ¨'('åçš„æ“ä½œç¬¦åŠå…¶ç›¸å…³èŠ‚ç‚¹è¿›è¡Œé“¾æ¥
+                //½«²Ù×÷·ûÕ»ÖĞÔÚ'('ºóµÄ²Ù×÷·û¼°ÆäÏà¹Ø½Úµã½øĞĞÁ´½Ó
                 while (operStack.top() != '(') {
                     char op = operStack.top();
                     operStack.pop();
@@ -179,25 +175,25 @@ Node *syntaxTree(string str) {
                 }
                 operStack.pop();
             } else if (c == '*' || c == '+') {
-                //é‡åˆ°æœ€é«˜è¿ç®—ç¬¦,ç›´æ¥æ“ä½œ
+                //Óöµ½×î¸ßÔËËã·û,Ö±½Ó²Ù×÷
                 Node *node = connectNodes(c, charStack);
                 charStack.push_back(node);
             } else {
                 while (!isHigh(operStack.top(), c)) {
-                    //å½“å‰æ“ä½œç¬¦ä¼˜å…ˆçº§ä½äºæ ˆé¡¶æ“ä½œç¬¦ä¼˜å…ˆçº§
-                    //å°†é«˜ä¼˜å…ˆçº§çš„æ“ä½œç¬¦ç›¸å…³çš„è¿›è¡Œé“¾æ¥å¤„ç†
+                    //µ±Ç°²Ù×÷·ûÓÅÏÈ¼¶µÍÓÚÕ»¶¥²Ù×÷·ûÓÅÏÈ¼¶
+                    //½«¸ßÓÅÏÈ¼¶µÄ²Ù×÷·ûÏà¹ØµÄ½øĞĞÁ´½Ó´¦Àí
                     char op = operStack.top();
                     operStack.pop();
-                    //å¾—åˆ°æ–°çš„æ ¹èŠ‚ç‚¹
+                    //µÃµ½ĞÂµÄ¸ù½Úµã
                     Node *node = connectNodes(op, charStack);
                     charStack.push_back(node);
                 }
-                //å‹å…¥ç¬¦å·æ ˆ
+                //Ñ¹Èë·ûºÅÕ»
                 operStack.push(c);
             }
         }
     }
-    //æ‰«æå…¨éƒ¨ç»“æŸ å°†æ ˆå†…å‰©ä½™éƒ¨åˆ†è¿æ¥
+    //É¨ÃèÈ«²¿½áÊø ½«Õ»ÄÚÊ£Óà²¿·ÖÁ¬½Ó
     while (operStack.top() != '#') {
         char op = operStack.top();
         operStack.pop();
@@ -208,8 +204,8 @@ Node *syntaxTree(string str) {
 }
 
 /**
- * åœ¨å­—ç¬¦æ•°ç»„ä¸­åŠ å…¥æ–°å…ƒç´ 
- * è‹¥å·²ç»å­˜åœ¨,åˆ™è¿”å›æ•°ç»„ç¼–å·
+ * ÔÚ×Ö·ûÊı×éÖĞ¼ÓÈëĞÂÔªËØ
+ * ÈôÒÑ¾­´æÔÚ,Ôò·µ»ØÊı×é±àºÅ
  *
  * @param chars
  * @param a
@@ -219,17 +215,17 @@ Node *syntaxTree(string str) {
 int addFindChar(vector<char> &chars, char a) {
     for (int i = 0; i < chars.size(); i++) {
         if (chars[i] == a) {
-            //è¿”å›å¯¹åº”ä¸‹æ ‡
+            //·µ»Ø¶ÔÓ¦ÏÂ±ê
             return i;
         }
     }
-    //æ²¡æ‰¾åˆ°,æ·»åŠ 
+    //Ã»ÕÒµ½,Ìí¼Ó
     chars.push_back(a);
     return MAX;
 }
 
 /**
- * è·å–æ­£è§„å¼çš„è¾“å…¥ç¬¦å·
+ * »ñÈ¡Õı¹æÊ½µÄÊäÈë·ûºÅ
  *
  * @param str
  * @param chars
@@ -237,7 +233,7 @@ int addFindChar(vector<char> &chars, char a) {
  */
 int getAbsorbChar(const string &str, vector<char> &chars) {
     for (char i : str) {
-        //ä¸æ˜¯æ“ä½œç¬¦
+        //²»ÊÇ²Ù×÷·û
         if (!processingOperPriority(i)) {
             addFindChar(chars, i);
         }
@@ -246,31 +242,31 @@ int getAbsorbChar(const string &str, vector<char> &chars) {
 }
 
 /**
- * æ·»åŠ æ–°çš„çŠ¶æ€è·³è½¬
+ * Ìí¼ÓĞÂµÄ×´Ì¬Ìø×ª
  *
- * @param graph å›¾
- * @param begin èµ·ç‚¹
- * @param end ç»ˆç‚¹
- * @param c è¾“å…¥å­—ç¬¦
+ * @param graph Í¼
+ * @param begin Æğµã
+ * @param end ÖÕµã
+ * @param c ÊäÈë×Ö·û
  */
 void addSkips(Graph &graph, int begin, int end, char c) {
     graph.skips[begin][addFindChar(graph.absorbChar, c)] = end;
 }
 
 /**
- * æ·»åŠ æ–°çš„ç©ºè·³è½¬
+ * Ìí¼ÓĞÂµÄ¿ÕÌø×ª
  *
- * @param graph å›¾
- * @param begin èµ·ç‚¹
- * @param end ç»ˆç‚¹
+ * @param graph Í¼
+ * @param begin Æğµã
+ * @param end ÖÕµã
  */
 void addEmptySkips(Graph &graph, int begin, int end) {
-    //ç©ºè·³è½¬æ•°åŠ ä¸€
+    //¿ÕÌø×ªÊı¼ÓÒ»
     graph.emptySkips[begin][++graph.emptySkips[begin][0]] = end;
 }
 
 /**
- * æ„é€ å¶å­èŠ‚ç‚¹çŠ¶æ€è½¬ç§»
+ * ¹¹ÔìÒ¶×Ó½Úµã×´Ì¬×ªÒÆ
  *
  * @param graph
  * @param node
@@ -278,19 +274,19 @@ void addEmptySkips(Graph &graph, int begin, int end) {
 void leafSkip(Graph &graph, Node &node) {
     node.startState = graph.stateSize++;
     node.endState = graph.stateSize++;
-    //æ·»åŠ å§‹æœ«çŠ¶æ€è½¬ç§»
+    //Ìí¼ÓÊ¼Ä©×´Ì¬×ªÒÆ
     addSkips(graph, node.startState, node.endState, node.chars);
 }
 
 /**
- * æ„é€ æ ¹çŠ¶æ€è½¬ç§»
+ * ¹¹Ôì¸ù×´Ì¬×ªÒÆ
  *
  * @param graph
  * @param node
  */
 void rootSkip(Graph &graph, Node &node) {
     if (node.type == '|') {
-        //æˆ–æ ¹æ„é€ 
+        //»ò¸ù¹¹Ôì
         node.startState = graph.stateSize++;
         node.endState = graph.stateSize++;
         addEmptySkips(graph, node.startState, node.lchild->startState);
@@ -298,7 +294,7 @@ void rootSkip(Graph &graph, Node &node) {
         addEmptySkips(graph, node.lchild->endState, node.endState);
         addEmptySkips(graph, node.rchild->endState, node.endState);
     } else if (node.type == '*') {
-        //é—­åŒ…æ„é€ 
+        //±Õ°ü¹¹Ôì
         node.startState = graph.stateSize++;
         node.endState = graph.stateSize++;
         addEmptySkips(graph, node.startState, node.lchild->startState);
@@ -306,14 +302,14 @@ void rootSkip(Graph &graph, Node &node) {
         addEmptySkips(graph, node.lchild->endState, node.lchild->startState);
         addEmptySkips(graph, node.lchild->endState, node.endState);
     } else if (node.type == '+') {
-        //æ­£é—­åŒ…æ„é€ 
+        //Õı±Õ°ü¹¹Ôì
         node.startState = graph.stateSize++;
         node.endState = graph.stateSize++;
         addEmptySkips(graph, node.startState, node.lchild->startState);
         addEmptySkips(graph, node.lchild->endState, node.lchild->startState);
         addEmptySkips(graph, node.lchild->endState, node.endState);
     } else if (node.type == '&') {
-        //è¿æ¥æ„é€ 
+        //Á¬½Ó¹¹Ôì
         node.startState = node.lchild->startState;
         node.endState = node.rchild->endState;
         for (int i = 0; i < graph.absorbChar.size(); i++) {
@@ -330,66 +326,62 @@ void rootSkip(Graph &graph, Node &node) {
 }
 
 /**
- * é€’å½’æ„é€ NFA
+ * µİ¹é¹¹ÔìNFA
  *
  * @param tree
  * @param graph
  * @param str
  */
 void makeNFA(Node *tree, Graph &graph, const string &str) {
-    //æ„é€ çŠ¶æ€è½¬ç§»çŸ©é˜µ
+    //¹¹Ôì×´Ì¬×ªÒÆ¾ØÕó
     if (tree->type == 'L') {
-        //å¶å­çŠ¶æ€è½¬ç§»
+        //Ò¶×Ó×´Ì¬×ªÒÆ
         leafSkip(graph, *tree);
     } else {
-        //æ„é€ å·¦å­æ ‘çŠ¶æ€è½¬ç§»
+        //¹¹Ôì×ó×ÓÊ÷×´Ì¬×ªÒÆ
         makeNFA(tree->lchild, graph, str);
-        //æ„é€ å³å­æ ‘çŠ¶æ€è½¬ç§»
+        //¹¹ÔìÓÒ×ÓÊ÷×´Ì¬×ªÒÆ
         if (tree->rchild != nullptr) {
             makeNFA(tree->rchild, graph, str);
         }
-        //æ„é€ æ ¹çŠ¶æ€è½¬ç§»
+        //¹¹Ôì¸ù×´Ì¬×ªÒÆ
         rootSkip(graph, *tree);
     }
 }
 
 /**
- * æ„é€ NFA
+ * ¹¹ÔìNFA
  *
  * @param tree
  * @param graph
  * @param str
  */
 Graph constructNFA(Node *tree, const string &str) {
-    //å¾—åˆ°å¸æ”¶ç¬¦å·
+    //µÃµ½ÎüÊÕ·ûºÅ
     vector<char> chars;
-    //æ­£åˆ™è¡¨è¾¾å¼ä¸­çš„å­—ç¬¦
+    //ÕıÔò±í´ïÊ½ÖĞµÄ×Ö·û
     getAbsorbChar(str, chars);
-    //åˆå§‹åŒ–NFA
+    //³õÊ¼»¯NFA
     auto *graph = new Graph(chars);
     graph->type = NFA;
-    //æ„é€ 
+    //¹¹Ôì
     makeNFA(tree, *graph, str);
     graph->startState = tree->startState;
     graph->endState = tree->endState;
-    //todo:åˆ·æ–°è·³è½¬åˆ—è¡¨
     return *graph;
 }
 
 /**
- * ç”ŸæˆNFA
+ * Éú³ÉNFA
  */
 Graph toMakeNFA() {
     string regex = inputRegex();
-    cout << "æ­£è§„å¼ä¸º:" << regex << endl;
-    //æ„å»ºè¯­æ³•æ ‘
+    cout << "Õı¹æÊ½Îª:" << regex << endl;
+    //¹¹½¨Óï·¨Ê÷
     Node *tree = syntaxTree(regex);
-    //éå†è¯­æ³•æ ‘
-    cout << "ååºéå†è¯­æ³•æ ‘: ";
-    visitTree(tree);
     cout << endl;
-    //æ„é€ NFA
-    cout << endl << "-----------Thompsonç®—æ³•æ„é€ NFA-----------" << endl;
+    //¹¹ÔìNFA
+    cout << endl << "ThompsonËã·¨¹¹ÔìNFA" << endl;
     Graph nfa = constructNFA(tree, regex);
     nfa.visitGraph();
     return nfa;

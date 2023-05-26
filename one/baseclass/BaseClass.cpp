@@ -4,14 +4,14 @@ using namespace base_class;
 
 Node::Node() : lchild(nullptr), rchild(nullptr) {}
 
-//åŒ…è£…å¶å­èŠ‚ç‚¹
+//°ü×°Ò¶×Ó½Úµã
 Node::Node(char c) : lchild(nullptr), rchild(nullptr), chars(c), type('L') {}
 
-//åŒ…è£…æ ¹èŠ‚ç‚¹
+//°ü×°¸ù½Úµã
 Node::Node(char type, Node *lchild, Node *rchild) : lchild(lchild), rchild(rchild), type(type) {}
 
 /**
- * åˆå§‹åŒ–çŠ¶æ€è½¬ç§»çŸ©é˜µ
+ * ³õÊ¼»¯×´Ì¬×ªÒÆ¾ØÕó
  *
  * @param graph
  * @param chars
@@ -22,54 +22,68 @@ Graph::Graph(vector<char> chars) {
     this->absorbChar.insert(this->absorbChar.end(), chars.begin(), chars.end());
     for (auto &skip : this->skips) {
         for (int &j : skip) {
-            //è¡¨ç¤ºæ— è·³è½¬
+            //±íÊ¾ÎŞÌø×ª
             j = MAX;
         }
     }
     for (auto &emptySkip : this->emptySkips) {
-        //ç©ºè·³è½¬ä¸ªæ•°ä¸º0
+        //¿ÕÌø×ª¸öÊıÎª0
         emptySkip[0] = 0;
     }
 }
 
 /**
-* å›¾çš„éå†
+* Í¼µÄ±éÀú
 *
 * @param graph
 * @param type
 */
 void Graph::visitGraph() {
 
-    cout << "çŠ¶æ€è·³è½¬çŸ©é˜µ:" << endl;
-    cout << "çŠ¶æ€" << setw(6);
+    cout << "×´Ì¬Ìø×ª¾ØÕó:" << endl;
+    cout << "×´Ì¬" << "\t\t";
     for (char i : this->absorbChar) {
-        cout << i << setw(6);
+        cout << i;
+        cout<<"\t\t";
     }
-    cout << setw(7) << "Îµ" << endl;
+    cout << "¦Å" << endl;
     for (int i = 0; i < this->stateSize; i++) {
-        cout << setw(3) << i;
+        if (this->skips[i][0] == -1) {
+            continue;
+        }
+        cout << i;
+
         for (int j = 0; j < this->absorbChar.size(); j++) {
             if (this->skips[i][j] == MAX) {
-                cout << setw(6) << "-";
+                cout << "\t\t" << " ";
             } else {
-                cout << setw(6) << this->skips[i][j];
+                cout << "\t\t"<<"{" << this->skips[i][j]<<"}";
             }
         }
-        //è¾“å‡ºç©ºè·³è½¬
-        cout << setw(6) << " ";
-        for (int j = 0; j < this->emptySkips[i][0]; j++)
-            cout << this->emptySkips[i][j + 1] << " ";
+
+
+        //Êä³ö¿ÕÌø×ª
+        cout << "\t\t" << " ";
+        if (this->emptySkips[i][0] > 0) {
+            cout << "{";
+            for (int j = 0; j < this->emptySkips[i][0]; j++) {
+                cout << this->emptySkips[i][j + 1];
+                if (j != this->emptySkips[i][0] - 1) {
+                    cout << ", ";
+                }
+            }
+            cout << "}";
+        }
         cout << endl;
     }
-    cout << "å…¶ä¸­,èµ·ç‚¹:" << this->startState << " ";
+    cout << "ÆäÖĞ,Æğµã:" << this->startState << " ";
     if (this->type == NFA) {
-        cout << "ç»ˆç‚¹:" << this->endState << " ";
+        cout << "ÖÕµã:" << this->endState << " ";
     } else {
-        cout << "ç»ˆç‚¹:";
+        cout << "ÖÕµã:";
         for (int i = 0; i < this->endSet.length; i++) {
             cout << this->endSet.stateSet[i] << " ";
         }
     }
     cout << endl;
-
 }

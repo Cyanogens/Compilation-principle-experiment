@@ -1,11 +1,12 @@
-#ifndef THOMPSON_H
-#define THOMPSON_H
+#ifndef MAIN_H
+#define MAIN_H
 
-#include <bits/stdc++.h>
 #include "../baseclass/BaseClass.h"
 
 using namespace base_class;
 
 Graph toMakeNFA();
+Graph toMakeDFA(Graph &nfa);
+void test(Graph dfa);
 
 #endif
